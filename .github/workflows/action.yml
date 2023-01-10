@@ -1,0 +1,55 @@
+name: Docker image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  NODE_VERSION: 18
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Nodejs
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Code checkout
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Code linting
+        run: npm run lint
+  
+  build-and-push:
+    needs: lint
+    name: push image
+    runs-on: ubuntu-latest
+    steps:
+      - name: login to docker hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }} 
+      
+      - name: build and push image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: boringq/devops-lab
+    
+  run:
+    needs: build-and-push
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:    
+      - name: run container
+        run: docker run -d -p 80:3000 -m 128m --cpus="1" --name boringq/devops-lab:latest
