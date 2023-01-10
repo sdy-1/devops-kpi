@@ -4,7 +4,8 @@
   "description": "Hello world nodejs app",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js"
+    "start": "node main.js",
+    "lint": "eslint --fix --ext .js,.jsx ."
   },
   "devDependencies": {
     "eslint": "^8.31.0"
