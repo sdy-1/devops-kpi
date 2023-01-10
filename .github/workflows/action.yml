@@ -51,4 +51,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:    
       - name: run container
-        run: docker run -d -p 80:3000 -m 128m --cpus="1" --name boringq/devops-lab:latest
+        run: docker run -d -p 80:3000 -m 128m --cpus="1" --name node_server boringq/devops-lab:latest
