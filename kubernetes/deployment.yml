@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-devops-lab
+  labels:
+    app: node-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nodelab
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nodelab
+    spec:
+      containers:
+      - image: boringq/devops-lab:latest
+        name: nodelab
+        ports:
+        - containerPort: 3000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 3
+          periodSeconds: 3
