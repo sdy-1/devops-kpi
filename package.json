@@ -1,0 +1,9 @@
+{
+  "name": "nodejs_devops_lab",
+  "version": "1.0.0",
+  "description": "Hello world nodejs app",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  }
+}
